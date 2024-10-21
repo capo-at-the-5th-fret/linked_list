@@ -2,6 +2,10 @@ export module linked_list;
 
 import std;
 
+// NOTE: This is not as efficient as std::forward_list, which uses
+// functions like before_begin() and insert_after() to help insert
+// elements without having to traverse nodes to find the insertion
+// point.
 export class linked_list
 {
 public:
