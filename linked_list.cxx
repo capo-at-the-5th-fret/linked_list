@@ -303,8 +303,7 @@ private:
 
 export bool operator==(const linked_list& lhs, const linked_list& rhs)
 {
-    // TODO: Use ranges version of equal
-    return std::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+    return std::ranges::equal(lhs, rhs);
 }
 
 export std::strong_ordering operator<=>(const linked_list& lhs, const linked_list& rhs)
