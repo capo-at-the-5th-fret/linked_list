@@ -78,12 +78,12 @@ public:
 
         bool operator==(const iterator& other) const = default;
 
-        reference operator*()
+        reference operator*() const
         {
             return node_->value;
         }
 
-        pointer operator->()
+        pointer operator->() const
         {
             return &(node_->value);
         }
@@ -132,12 +132,12 @@ public:
 
         bool operator==(const const_iterator& other) const = default;
 
-        reference operator*()
+        reference operator*() const
         {
             return node_->value;
         }
 
-        pointer operator->()
+        pointer operator->() const
         {
             return &(node_->value);
         }
