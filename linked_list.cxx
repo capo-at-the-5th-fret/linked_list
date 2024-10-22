@@ -62,15 +62,30 @@ public:
     class iterator
     {
     public:
-        iterator(list_node* n) : node_{ n }
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = int;
+        using difference_type = std::ptrdiff_t;
+        using pointer = int*;
+        using reference = int&;
+
+        using node_pointer = list_node*;
+
+        iterator() = default;
+
+        iterator(node_pointer n) : node_{ n }
         {
         }
 
         bool operator==(const iterator& other) const = default;
 
-        int& operator*()
+        reference operator*()
         {
             return node_->value;
+        }
+
+        pointer operator->()
+        {
+            return &(node_->value);
         }
 
         iterator& operator++()
@@ -89,27 +104,42 @@ public:
             return temp;
         }
 
-        list_node* node() const
+        node_pointer node() const
         {
             return node_;
         }
 
     private:
-        list_node* node_{ nullptr };
+        node_pointer node_{ nullptr };
     };
 
     class const_iterator
     {
     public:
-        const_iterator(const list_node* n) : node_{ n }
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = const int;
+        using difference_type = std::ptrdiff_t;
+        using pointer = const int*;
+        using reference = const int&;
+
+        using node_pointer = const list_node*;
+
+        const_iterator() = default;
+
+        const_iterator(node_pointer n) : node_{ n }
         {
         }
 
         bool operator==(const const_iterator& other) const = default;
 
-        const int& operator*()
+        reference operator*()
         {
             return node_->value;
+        }
+
+        pointer operator->()
+        {
+            return &(node_->value);
         }
 
         const_iterator& operator++()
@@ -128,8 +158,13 @@ public:
             return temp;
         }
 
+        node_pointer node() const
+        {
+            return node_;
+        }
+
     private:
-        const list_node* node_{ nullptr };
+        node_pointer node_{ nullptr };
     };
 
     iterator begin()
