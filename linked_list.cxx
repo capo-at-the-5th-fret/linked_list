@@ -72,7 +72,7 @@ public:
 
         pointer operator->() const
         {
-            return &(node_->value);
+            return std::addressof(node_->value);
         }
 
         iterator& operator++()
@@ -126,7 +126,7 @@ public:
 
         pointer operator->() const
         {
-            return &(node_->value);
+            return std::addressof(node_->value);
         }
 
         const_iterator& operator++()
