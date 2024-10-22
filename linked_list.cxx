@@ -303,24 +303,8 @@ private:
 
 export bool operator==(const linked_list& lhs, const linked_list& rhs)
 {
-    if (lhs.size() != rhs.size())
-    {
-        return false;
-    }
-
-    auto first1 = lhs.begin();
-    auto last1 = lhs.end();
-    auto first2 = rhs.begin();
-
-    for (; first1 != last1; ++first1, ++first2)
-    {
-        if (*first1 != *first2)
-        {
-            return false;
-        }
-    }
-
-    return true;
+    // TODO: Use ranges version of equal
+    return std::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 
 export std::strong_ordering operator<=>(const linked_list& lhs, const linked_list& rhs)
