@@ -306,27 +306,10 @@ export bool operator==(const linked_list& lhs, const linked_list& rhs)
     return std::ranges::equal(lhs, rhs);
 }
 
-export std::strong_ordering operator<=>(const linked_list& lhs, const linked_list& rhs)
+export auto operator<=>(const linked_list& lhs, const linked_list& rhs)
 {
-    auto first1 = lhs.begin();
-    auto last1 = lhs.end();
-    auto first2 = rhs.begin();
-    auto last2 = rhs.end();
-
-    bool exhaust1 = (first1 == last1);
-    bool exhaust2 = (first2 == last2);
-    for (; !exhaust1 && !exhaust2; exhaust1 = (++first1 == last1),
-        exhaust2 = (++first2 == last2))
-    {
-        if (auto c = *first1 <=> *first2; c != 0)
-        {
-            return c;
-        }
-    }
- 
-    return !exhaust1 ? std::strong_ordering::greater:
-           !exhaust2 ? std::strong_ordering::less:
-                       std::strong_ordering::equal;
+    return std::lexicographical_compare_three_way(lhs.begin(), lhs.end(),
+        rhs.begin(), rhs.end());
 }
 
 export template <>
