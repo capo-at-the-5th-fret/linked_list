@@ -13,18 +13,12 @@ public:
 
     linked_list(std::initializer_list<int> values)
     {
-        for (auto value : values)
-        {
-            push_back(value);
-        }
+        insert(end(), values.begin(), values.end());
     }
 
     linked_list(const linked_list& other)
     {
-        for (auto value : other)
-        {
-            push_back(value);
-        }
+        insert(end(), other.begin(), other.end());
     }
 
     ~linked_list()
@@ -37,10 +31,7 @@ public:
         if (this != &other)
         {
             clear();
-            for (auto value : other)
-            {
-                push_back(value);
-            }
+            insert(end(), other.begin(), other.end());
         }
 
         return *this;
@@ -49,11 +40,7 @@ public:
     linked_list& operator=(std::initializer_list<int> values)
     {
         clear();
-        for (auto value : values)
-        {
-            push_back(value);
-        }
-
+        insert(end(), values.begin(), values.end());
         return *this;
     }
 
@@ -248,6 +235,57 @@ public:
         return end();
     }
 
+    template <std::input_iterator InputIt>
+    requires (std::same_as<std::iter_value_t<InputIt>, int>)
+    iterator insert(iterator pos, InputIt first, InputIt last)
+    {
+        if (first == last)
+        {
+            return pos;
+        }
+
+        // construct the new nodes, keeping track of the first, last and count
+        auto* first_node = new list_node{ .value = *first, .next = nullptr };
+        auto* last_node = first_node;
+        std::size_t new_node_count{ 1 };
+        
+        for (auto pos = std::next(first); pos != last; ++pos)
+        {
+            auto* new_node = new list_node{ .value = *pos, .next = nullptr };
+            last_node->next = new_node;
+            last_node = new_node;
+            ++new_node_count;
+        }
+
+        // the new nodes are inserted at the front
+        if (pos == begin())
+        {
+            last_node->next = head_;
+            head_ = first_node;
+            size_ += new_node_count;
+            return begin();
+        }
+        else
+        {
+            for (auto current_pos = begin(); current_pos != end();
+                ++current_pos)
+            {
+                // next is the insert position; insert the new nodes in between
+                // the current and the next
+                if (current_pos.node()->next == pos.node())
+                {
+                    last_node->next = current_pos.node()->next;
+                    current_pos.node()->next = first_node;
+                    size_ += new_node_count;
+                    return current_pos++;
+                }
+            }
+        }
+
+        // should never happen
+        return end();
+    }
+
     iterator erase(iterator pos)
     {
         // erase the head
@@ -324,6 +362,23 @@ struct std::formatter<linked_list>
     template <typename FormatContext>
     auto format(const linked_list& list, FormatContext& ctx) const
     {
-        return std::format_to(ctx.out(), "{}", list);
+        // TODO: Use range formatter?
+        auto out = ctx.out();
+        out = std::format_to(out, "[");
+
+        auto pos = list.begin();
+
+        if (pos != list.end())
+        {
+            out = std::format_to(out, "{}", *pos);
+            ++pos;
+        }
+
+        for (; pos != list.end(); ++pos)
+        {
+            out = std::format_to(out, ", {}", *pos);
+        }
+
+        return std::format_to(out, "]");
     }
 };

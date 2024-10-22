@@ -42,8 +42,24 @@ int main()
     linked_list list3{ 0, 2, 4, 5, 7 };
     std::println("initializer_list constructed list of 5 -> {}", list3);
 
-    list3 = { 1, 3, 5 };
+    list3 = { 1, 2, 3 };
     std::println("assign from initializer list of 3 -> {}", list3);
+
+    std::vector v = { 4, 5, 6 };
+    list3.insert(list3.begin(), v.begin(), v.end());
+    std::println("insert vector of 3 at begin -> {}", list3);
+
+    std::array a = { 7, 8 };
+    list3.insert(std::next(list3.begin(), 3), a.begin(), a.end());
+    std::println("insert array of 2 at (begin + 3) -> {}", list3);
+
+    std::list l = { 9 };
+    list3.insert(std::next(list3.begin(), 7), l.begin(), l.end());
+    std::println("insert list of 1 at (begin + 7) -> {}", list3);
+
+    v = { 10, 11, 12, 13 };
+    list3.insert(list3.end(), v.begin(), v.end());
+    std::println("insert vector of 4 at end -> {}", list3);
 
     {
         const linked_list a = { 1, 3, 5 };
