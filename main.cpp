@@ -50,6 +50,7 @@ int main()
 
         std::vector<std::tuple<linked_list, std::strong_ordering>> tests =
         {
+            { { }, std::strong_ordering::greater },
             { { 0 }, std::strong_ordering::greater },
             { { 1 }, std::strong_ordering::greater },
             { { 2 }, std::strong_ordering::less },
