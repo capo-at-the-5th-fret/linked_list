@@ -117,6 +117,10 @@ public:
         {
         }
 
+        const_iterator(const iterator& pos) : node_{ pos.node() }
+        {
+        }
+
         bool operator==(const const_iterator& other) const = default;
 
         reference operator*() const
@@ -198,7 +202,7 @@ public:
         }
     }
 
-    iterator insert(iterator pos, int value)
+    iterator insert(const_iterator pos, int value)
     {
         auto* new_node = new list_node
         {
@@ -237,11 +241,21 @@ public:
 
     template <std::input_iterator InputIt>
     requires (std::same_as<std::iter_value_t<InputIt>, int>)
-    iterator insert(iterator pos, InputIt first, InputIt last)
+    iterator insert(const_iterator pos, InputIt first, InputIt last)
     {
         if (first == last)
         {
-            return pos;
+            for (auto current_pos = begin(); current_pos != end();
+                ++current_pos)
+            {
+                if (current_pos.node() == pos.node())
+                {
+                    return iterator{ current_pos.node() };
+                }
+            }
+
+            // should never happen
+            return end();
         }
 
         // construct the new nodes, keeping track of the first, last and count
@@ -286,7 +300,7 @@ public:
         return end();
     }
 
-    iterator erase(iterator pos)
+    iterator erase(const_iterator pos)
     {
         // erase the head
         if (pos == begin())
