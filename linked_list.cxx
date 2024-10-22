@@ -245,6 +245,7 @@ public:
     {
         if (first == last)
         {
+            // TODO: use const_cast on pos.node()?
             for (auto current_pos = begin(); current_pos != end();
                 ++current_pos)
             {
