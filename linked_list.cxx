@@ -290,20 +290,6 @@ public:
         insert(begin(), value);
     }
 
-    void print() const
-    {
-        std::println("[ Linked List - size: {}, empty: {} ]", size(), empty());
-
-        if (head_)
-        {
-            for (std::size_t index = 0; auto value : *this)
-            {
-                std::println("{} => {}", index, value);
-                ++index;
-            }
-        }
-    }
-
 private:
     struct list_node
     {
@@ -359,3 +345,34 @@ export std::strong_ordering operator<=>(const linked_list& lhs, const linked_lis
            !exhaust2 ? std::strong_ordering::less:
                        std::strong_ordering::equal;
 }
+
+export template <>
+struct std::formatter<linked_list>
+{
+    template <typename ParseContext>
+    constexpr auto parse(ParseContext& ctx)
+    {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const linked_list& list, FormatContext& ctx) const
+    {
+        // TODO: support for ranges can handle this instead?
+        auto out = ctx.out();
+        out = std::format_to(out, "[");
+
+        if (auto pos = list.begin(); pos != list.end())
+        {
+            out = std::format_to(out, "{}", *pos);
+            ++pos;
+
+            for (; pos != list.end(); ++pos)
+            {
+                out = std::format_to(out, ", {}", *pos);
+            }
+        }
+
+        return std::format_to(out, "]");
+    }
+};

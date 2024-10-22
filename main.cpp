@@ -4,56 +4,46 @@ import linked_list;
 int main()
 {
     linked_list list;
-    list.print();
-    //assert(list.empty());
+    std::println("default constructed list -> {}", list);
 
     list.push_back(1);
-    list.print();
-    //assert(list.empty() == false);
+    std::println("push 1 to back -> {}", list);
 
     list.push_back(2);
-    list.print();
+    std::println("push 2 to back -> {}", list);
 
     list.insert(list.begin(), 0);
-    list.print();
+    std::println("insert 0 at front -> {}", list);
 
     list.insert(list.end(), 3);
-    list.print();
+    std::println("insert 3 at end -> {}", list);
 
-    auto pos = list.begin();
-    pos++;
-    pos++;
-
+    auto pos = std::next(list.begin(), 2);
     list.insert(pos, 4);
-    list.print();
+    std::println("insert 4 at (begin + 2) -> {}", list);
 
     linked_list list2{ list };
-    list2.print();
+    std::println("2nd list initialized from list 1 -> {} vs {}", list2, list);
 
     list.erase(list.begin());
-    list.print();
+    std::println("erase from front -> {}", list);
 
-    pos = list.begin();
-    pos++;
+    pos = std::next(list.begin());
     list.erase(pos);
-    list.print();
+    std::println("erase from (begin + 1) -> {}", list);
 
-    pos = list.begin();
-    pos++;
-    pos++;
+    pos = std::next(list.begin(), 2);
     list.erase(pos);
-    list.print();
+    std::println("erase from (begin + 2) -> {}", list);
 
     list.clear();
-    list.print();
+    std::println("clear list -> {}", list);
 
-    linked_list list3 = { 2, 4, 6 };
-    linked_list list4{ list3 };
-    list4.print();
+    linked_list list3{ 0, 2, 4, 5, 7 };
+    std::println("initializer_list constructed list of 5 -> {}", list3);
 
-    linked_list list5;
-    list5 = { 1, 3, 5 };
-    list5.print();
+    list3 = { 1, 3, 5 };
+    std::println("assign from initializer list of 3 -> {}", list3);
 
     {
         const linked_list a = { 1, 3, 5 };
