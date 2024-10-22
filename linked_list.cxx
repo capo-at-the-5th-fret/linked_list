@@ -324,21 +324,6 @@ struct std::formatter<linked_list>
     template <typename FormatContext>
     auto format(const linked_list& list, FormatContext& ctx) const
     {
-        // TODO: support for ranges can handle this instead?
-        auto out = ctx.out();
-        out = std::format_to(out, "[");
-
-        if (auto pos = list.begin(); pos != list.end())
-        {
-            out = std::format_to(out, "{}", *pos);
-            ++pos;
-
-            for (; pos != list.end(); ++pos)
-            {
-                out = std::format_to(out, ", {}", *pos);
-            }
-        }
-
-        return std::format_to(out, "]");
+        return std::format_to(ctx.out(), "{}", list);
     }
 };
